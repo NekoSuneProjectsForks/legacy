@@ -81,6 +81,8 @@ jobs:
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v7
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
         with:
           context: .
           file: ./docker/${{ matrix.path }}Dockerfile
@@ -116,6 +118,7 @@ jobs:
       - name: Download all digest artifacts
         uses: actions/download-artifact@v6
         with:
+          pattern: digest-*
           path: digests/
 
       - name: Read digests from artifacts
