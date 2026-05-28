@@ -17,8 +17,6 @@ public abstract class PlexBaseConnectionHandler(
         PlexMediaSource server,
         PlexServerAuthToken token)
     {
-        Option<PlexConnection> result = Option<PlexConnection>.None;
-
         foreach (PlexConnection connection in server.Connections)
         {
             connection.IsActive = false;
@@ -47,7 +45,7 @@ public abstract class PlexBaseConnectionHandler(
         }
 
         Option<PlexConnection> maybeBest =
-            successfulTimes.OrderByDescending(kv => kv.Value).Select(kvp => kvp.Key).HeadOrNone();
+            successfulTimes.OrderBy(kv => kv.Value).Select(kvp => kvp.Key).HeadOrNone();
         foreach (PlexConnection connection in maybeBest)
         {
             connection.IsActive = true;
@@ -61,7 +59,7 @@ public abstract class PlexBaseConnectionHandler(
 
         await mediaSourceRepository.Update(server, [], []);
 
-        return result;
+        return maybeBest;
     }
 
     private async Task PingPlexConnection(

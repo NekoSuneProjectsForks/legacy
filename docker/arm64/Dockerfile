@@ -49,4 +49,5 @@ COPY --from=build /app ./
 COPY ersatztv-channel ./
 ENV ETV_CONFIG_FOLDER=/config
 ENV ETV_TRANSCODE_FOLDER=/transcode
+ENV ETV_ALLOW_SHARED_PLEX_SERVERS=1
 ENTRYPOINT ["./ErsatzTV"]
