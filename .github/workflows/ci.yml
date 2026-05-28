@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get the sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Extract Docker Tag
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0)
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           tag2="${tag:1}"
           short=$(git rev-parse --short HEAD)
           final="${tag2}-${short}"
@@ -28,7 +28,7 @@ jobs:
       - name: Extract Artifacts Version
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0)
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           short=$(git rev-parse --short HEAD)
           final="${tag}-${short}"
           echo "ARTIFACTS_VERSION=${final}" >> $GITHUB_ENV
